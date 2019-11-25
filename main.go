@@ -3,25 +3,26 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
 
-	mux := http.NewServeMux()
+	router := mux.NewRouter()
 
-	mux.HandleFunc("/health-check", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/health-check", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Hello World!")
 	})
 
-	mux.HandleFunc("/nse", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/nse", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Hello World!")
 	})
 
 	server := http.Server{
 		Addr:    ":4000",
-		Handler: mux,
+		Handler: router,
 	}
-	fmt.Println("Yeah")
 	panic(server.ListenAndServe())
 
 }
