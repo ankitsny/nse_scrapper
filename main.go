@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"nse_scrapper/app"
+	"nse_scrapper/handlers"
+	"nse_scrapper/routes"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -30,6 +32,8 @@ func main() {
 		fmt.Fprintln(w, "Hello World!")
 	})
 
+	registerRoutes(router)
+
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%v", app.Config.ServerPort),
 		Handler: router,
@@ -38,4 +42,9 @@ func main() {
 	fmt.Println("Listening on Port ", app.Config.ServerPort)
 	panic(server.ListenAndServe())
 
+}
+
+func registerRoutes(r *mux.Router) {
+	nseHandler := handlers.NewNSEHandlers()
+	routes.NewNSERoutes(r, nseHandler).RegisterRoutes()
 }

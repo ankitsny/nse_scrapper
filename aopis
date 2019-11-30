@@ -1,0 +1,5 @@
+POST https://www.nseindia.com/corporates/common/getCompanyListMktTracker.jsp
+    query=STOCK_NAME
+
+
+GET https://www.nseindia.com/companytracker/cmtracker.jsp?symbol=TCS&cName=cmtracker_nsedef.css
