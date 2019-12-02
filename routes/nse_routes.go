@@ -27,4 +27,5 @@ func NewNSERoutes(r *mux.Router, h handlers.INSEHandlers) INSERoutes {
 
 func (nr *nseRoutes) RegisterRoutes() {
 	nr.router.HandleFunc("/company", nr.handler.SearchCompanyName).Methods(http.MethodGet)
+	nr.router.HandleFunc("/company/details", nr.handler.GetCompanyDetails).Methods(http.MethodGet)
 }

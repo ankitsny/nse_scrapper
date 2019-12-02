@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"sort"
 	"time"
 )
 
@@ -75,4 +76,141 @@ func makeHTTPRequest(method string, requestParams *HTTPRequest) (*http.Response,
 // accepts http method
 func (r HTTPRequest) Do(method string) (*http.Response, error) {
 	return makeHTTPRequest(method, &r)
+}
+
+// ExecParallelResponse :
+type ExecParallelResponse struct {
+	Data  interface{}
+	Error error
+	Index int
+}
+
+// ExecParallel :
+func ExecParallel(cLimit int, funcs ...func() interface{}) []ExecParallelResponse {
+	semaphoreChan := make(chan struct{}, cLimit)
+	resultsChan := make(chan *ExecParallelResponse)
+
+	defer func() {
+		close(semaphoreChan)
+		close(resultsChan)
+	}()
+
+	for i, f := range funcs {
+		go func(i int, f func() interface{}) {
+
+			semaphoreChan <- struct{}{}
+
+			data := f()
+
+			r := &ExecParallelResponse{}
+			r.Data = data
+			r.Index = i
+
+			// write into the channel
+			resultsChan <- r
+
+			// free the buffered channel
+			<-semaphoreChan
+
+		}(i, f)
+	}
+
+	results := make([]ExecParallelResponse, 0)
+
+	for {
+		r := <-resultsChan
+		results = append(results, *r)
+
+		if len(results) == len(funcs) {
+			break
+		}
+	}
+
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Index < results[j].Index
+	})
+
+	return results
+}
+
+// ParallelGETResult :
+type ParallelGETResult struct {
+	Index    int
+	Response *http.Response
+	Err      error
+}
+
+// ParallelGET :
+func ParallelGET(urls []string, query url.Values, cLimit int) []ParallelGETResult {
+	semaphoreChan := make(chan struct{}, cLimit)
+
+	resultsChan := make(chan *ParallelGETResult)
+
+	defer func() {
+		close(semaphoreChan)
+		close(resultsChan)
+	}()
+
+	for i, url := range urls {
+		go func(i int, url string) {
+
+			// write to semaphore
+			semaphoreChan <- struct{}{}
+
+			req := HTTPRequest{}
+			req.URL = url
+			req.Query = query
+
+			resp, err := req.Do(http.MethodGet)
+
+			pResp := &ParallelGETResult{}
+
+			pResp.Err = err
+			pResp.Response = resp
+			pResp.Index = i
+
+			resultsChan <- pResp
+			// read from chan, just to allow waiting go routine to execute
+			<-semaphoreChan
+
+		}(i, url)
+	}
+
+	var results []ParallelGETResult
+	for {
+		resp := <-resultsChan
+		results = append(results, *resp)
+
+		// break the loop after completion of all request
+		if (len(urls)) == len(results) {
+			break
+		}
+	}
+
+	// Sort the response
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Index < results[j].Index
+	})
+
+	return results
+}
+
+// FilterStr :
+func FilterStr(s []string, f func(string) bool) []string {
+	var res = make([]string, 0)
+	for _, v := range s {
+		if f(v) {
+			res = append(res, v)
+		}
+	}
+	return res
+}
+
+// MapStr :
+func MapStr(s []string, f func(str string) string) []string {
+	var res = make([]string, 0)
+	for _, v := range s {
+		res = append(res, f(v))
+	}
+	return res
 }

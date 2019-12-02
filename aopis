@@ -3,3 +3,12 @@ POST https://www.nseindia.com/corporates/common/getCompanyListMktTracker.jsp
 
 
 GET https://www.nseindia.com/companytracker/cmtracker.jsp?symbol=TCS&cName=cmtracker_nsedef.css
+    Purpose: document.getElementById("corpAction")
+    Info: document.getElementById("compInfo")
+
+BOARD Meeting GET https://www.nseindia.com/marketinfo/companyTracker/boardMeeting.jsp?symbol=TCS
+
+
+CORP corpAction(purpose) GET https://www.nseindia.com/marketinfo/companyTracker/corpAction.jsp?symbol=TCS
+CORP Announcement GET https://www.nseindia.com/marketinfo/companyTracker/corpAnnounce.jsp?symbol=TCS
+Corp INFO GET https://www.nseindia.com/marketinfo/companyTracker/compInfo.jsp?symbol=TCS&series=EQ

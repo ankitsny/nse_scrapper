@@ -39,6 +39,13 @@ func main() {
 		Handler: router,
 	}
 
+	// SPA Handler
+	// TODO: Serve Static file using nginx or apache or CDN
+	router.PathPrefix("/").Handler(handlers.SpaHandler{
+		IndexPath:  "nse_view/build/index.html",
+		StaticPath: "nse_view/build",
+	})
+
 	fmt.Println("Listening on Port ", app.Config.ServerPort)
 	panic(server.ListenAndServe())
 
