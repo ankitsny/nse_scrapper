@@ -30,11 +30,11 @@
 
     ```sh
     # Pull from docker hub
-    docker run -p 3000:3000 ankso3/nse_scrapper
+    docker run -p 3333:3333 ankso3/nse_scrapper
 
     # OR
     docker build --rm -f "Dockerfile" -t nse_scrapper:latest .
-    docker run -p 3000:3000 nse_scrapper
+    docker run -p 3333:3333 nse_scrapper
 
     # OR
     docker-compose -f "docker-compose.yml" up -d --build

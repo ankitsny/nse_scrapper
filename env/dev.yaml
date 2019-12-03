@@ -1,5 +1,5 @@
 # Server Port
-server_port: 3000
+server_port: 3333
 
 # Log path
 log_path: "log"

@@ -1,0 +1,36 @@
+table thead tr th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #fff;
+}
+
+table tr th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #fff;
+}
+
+.shadow {
+  box-shadow: 0px 0px 5px #ddd;
+  border-radius: 5px;
+}
+
+.rigth-card {
+  width: 98%;
+  margin-top: 5px;
+  padding: 10px;
+}
+
+.inner-b-m {
+  max-height: 85vh;
+  overflow: auto;
+}
+
+.outer-b-m {
+  max-height: 91vh;
+  padding: 10px 2px 10px 10px;
+}

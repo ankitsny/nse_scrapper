@@ -1,4 +1,4 @@
-export default X = {
+export default {
   boardMeeting: [
     { date: "10-Oct-2019", purpose: "Financial Results/Dividend" },
     { date: "10-Oct-2019", purpose: "Financial Results/Dividend" },
