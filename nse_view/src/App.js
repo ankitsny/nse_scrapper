@@ -72,7 +72,7 @@ function App() {
 
         {isLoadingCorpDetails && (
           <div style={{ textAlign: "center", marginTop: "50px" }}>
-            Loading Detals for {corp}
+            Loading Details of {corp}
           </div>
         )}
 

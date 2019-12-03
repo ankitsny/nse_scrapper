@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"nse_scrapper/app"
 	"nse_scrapper/handlers"
+	"nse_scrapper/middleware"
 	"nse_scrapper/routes"
 	"time"
 
@@ -20,6 +21,8 @@ func main() {
 	now := time.Now()
 
 	router := mux.NewRouter()
+
+	router.Use(middleware.EnableAccessLog)
 
 	router.HandleFunc("/health-check", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, fmt.Sprintf(`
