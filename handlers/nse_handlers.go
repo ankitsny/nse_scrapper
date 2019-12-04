@@ -39,7 +39,7 @@ func (ns *nseHandlers) SearchCompanyName(w http.ResponseWriter, r *http.Request)
 	}
 
 	defer resp.Body.Close()
-	copyHeader(w.Header(), resp.Header)
+	utils.CopyHeader(w.Header(), resp.Header)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(resp.StatusCode)
 	io.Copy(w, resp.Body)
@@ -94,19 +94,8 @@ func (ns *nseHandlers) GetCompanyDetails(w http.ResponseWriter, r *http.Request)
 
 	cRespB, _ := json.Marshal(cResp)
 
-	// copyHeader(w.Header(), _resp.Header)
 	w.Header().Set("Content-Type", "application/json")
-	// w.WriteHeader(_resp.StatusCode)
-	// io.Copy(w,)
 	w.WriteHeader(200)
 	w.Write(cRespB)
 
-}
-
-func copyHeader(dst, src http.Header) {
-	for k, vv := range src {
-		for _, v := range vv {
-			dst.Add(k, v)
-		}
-	}
 }
