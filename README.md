@@ -1,6 +1,6 @@
 # NSE Website Scrapper
 
-> https://www.nseindia.com/corporates/corporateHome.html
+> https://www.nseindia.com/corporates/corporateHome.html----  404 error 
 
 -> Corporate information -> Board meetings in the left menu shows a list of companies on the right side (a table) with a search box on top. When you click on the blue link under "Purpose", it pops up a page with info about that particular board meeting.
 
